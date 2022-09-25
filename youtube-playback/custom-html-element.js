@@ -1,1 +1,1 @@
-export default function() { console.log('custom-html-element.js was run') }
+console.log('custom-html-element.js was run')
