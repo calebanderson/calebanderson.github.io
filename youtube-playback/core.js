@@ -1,3 +1,3 @@
-import foo from './custom-html-element';
+import foo from './custom-html-element.js';
 
 foo();
