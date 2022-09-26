@@ -1,3 +1,6 @@
+import CustomCookie from './custom_cookie.js';
+window.customCookie = CustomCookie;
+
 import './bookmark_button.js'
 import './playback_rate_display.js'
 import './endcard_toggle.js'

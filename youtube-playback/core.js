@@ -1,7 +1,5 @@
 import './remove_shim.js';
 import CustomVideo from './custom_video.js';
-import CustomCookie from './custom_cookie.js';
-window.customCookie = CustomCookie;
 window.customVideoRef = CustomVideo;
 
 // Wanted to try out promises... obviously not the most useful implementation...
