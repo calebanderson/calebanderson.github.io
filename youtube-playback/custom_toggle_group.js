@@ -1,6 +1,5 @@
 import './custom_toggle_button.js';
 import CustomHTMLElement from './custom_html_element.js';
-import CustomStylesheet from './custom_stylesheet.js';
 
 class CustomToggleGroup extends CustomHTMLElement {
   constructor(){
@@ -51,13 +50,5 @@ class CustomToggleGroup extends CustomHTMLElement {
     }
   }
 }
-CustomStylesheet.add(`
-  .custom-action-badge.toggle-button.on-button{
-    background-color: #444;
-  }
-  .custom-action-badge.toggle-button.on-button:hover:not(:active) {
-    background-color: #555;
-  }
-`);
 
 export default CustomToggleGroup;

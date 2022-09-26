@@ -1,4 +1,3 @@
-import CustomStylesheet from './custom_stylesheet.js';
 import CustomToggleGroup from './custom_toggle_group.js';
 
 class EndcardToggle extends CustomToggleGroup {
@@ -25,10 +24,5 @@ class EndcardToggle extends CustomToggleGroup {
 }
 customElements.define('endcard-toggle', EndcardToggle);
 
-CustomStylesheet.add(`
-  body[hide_endcard] .ytp-ce-element {
-    display:none;
-  }
-`);
 
 export default EndcardToggle;

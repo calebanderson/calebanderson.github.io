@@ -1,5 +1,4 @@
 import CustomHTMLElement from './custom_html_element.js';
-import CustomStylesheet from './custom_stylesheet.js';
 
 class CustomBadge extends CustomHTMLElement {
   connectedCallback(){
@@ -40,27 +39,5 @@ class CustomBadge extends CustomHTMLElement {
     this.textContent = this.value;
   }
 }
-
-CustomStylesheet.add(`
-  .custom-action-badge {
-    color: #FFF;
-    display: inline-block;
-    font-size: 14px;
-    background-color: #248;
-    padding: 2px 10px;
-    margin: 0px 8px 8px 0px;
-    border: 1px #555 solid;
-    border-radius: 12px;
-  }
-  .custom-action-badge[hidden] {
-    display: none;
-  }
-  .custom-action-badge.clickable {
-    cursor: pointer;
-  }
-  .custom-action-badge.clickable:hover:not(:active) {
-    background-color: #359;
-  }
-`);
 
 export default CustomBadge;
