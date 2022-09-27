@@ -1,0 +1,17 @@
+.custom-action-badge {
+  color: #FFF;
+  display: inline-block;
+  font-size: 14px;
+  background-color: #248;
+  padding: 2px 10px;
+  margin: 0px 8px 8px 0px;
+  border: 1px #555 solid;
+  border-radius: 12px;
+  user-select: none;
+}
+.custom-action-badge[hidden] { display: none; }
+.custom-action-badge.clickable { cursor: pointer; }
+.custom-action-badge.clickable:hover:not(:active) { background-color: #359; }
+.custom-action-badge.toggle-button.on-button { background-color: #444; }
+.custom-action-badge.toggle-button.on-button:hover:not(:active) { background-color: #555; }
+body[hide_endcard] .ytp-ce-element { display:none; }
