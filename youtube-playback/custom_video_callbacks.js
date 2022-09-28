@@ -1,4 +1,10 @@
-// Easily expandable, but no usecase beyond setters and HTMLVideoElement yet
+// The reason this is useful is because youtube doesn't actually end up firing the majority of the events that
+//   exist on HTMLVideoElement. It does fire play/playing/pause/ended (which is actually very useful since Google Cast
+//   bugs out and stops sending those signals if you pause, then play after more than ~10 seconds) but ratechange/
+//   loadstart are not able to use event listeners.
+// TODO: move addFunctionCallback to an eventListener applier pattern within the constructor? E.g. have a list of
+//   callbacks that are applied to existing video elements, and modify the constructor to apply them on creation.
+
 const CustomVideoCallbacks = {
   addSetterCallback(propName, func){
     this.registerProp(propName);
@@ -16,9 +22,8 @@ const CustomVideoCallbacks = {
 
   registerCallback(propName, overrideKey) {
     if(this.registeredCallbacks.includes(propName)) return;
-    if(typeof(propName) !== 'string'){
-      throw new Error('argument must be a string');
-    }
+    if(typeof(propName) !== 'string') throw new Error('argument must be a string');
+
     Object.defineProperty(this, this.callbackListName(propName), {
       value: new Set,
       configurable: true

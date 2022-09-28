@@ -23,6 +23,3 @@ class EndcardToggle extends CustomToggleGroup {
   }
 }
 customElements.define('endcard-toggle', EndcardToggle);
-
-
-export default EndcardToggle;

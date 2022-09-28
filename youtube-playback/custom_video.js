@@ -10,8 +10,7 @@ class CustomVideo {
   static playbackScalar = 1.2599;
   static playbackAdder = 0.00003;
   static seekDuration = 5;
-  static inputSelector = 'input[type=text], textarea';
-  // static badgeContainerSelector = 'ytd-video-primary-info-renderer #container';
+  static inputSelector = 'yt-user-mention-autosuggest-input';
   static badgeContainerSelector = '#above-the-fold';
   static videoElementSelector = 'video[src]';
   static customElementContainerID = 'custom_element_container';
@@ -28,44 +27,30 @@ class CustomVideo {
     }
   };
 
-  get element(){
-    return this._element;
-  }
-  set element(video){
-    this._element = video;
-  }
+  get element(){ return this._element; }
+  set element(video){ this._element = video; }
 
-  get time(){
-    return this.element.currentTime;
-  }
-  set time(val){
-    this.element.currentTime = val;
-  }
+  get time(){ return this.element.currentTime; }
+  set time(val){ this.element.currentTime = val; }
 
-  get playbackRate(){
-    return this.element.playbackRate;
-  }
+  get playbackRate(){ return this.element.playbackRate; }
   set playbackRate(rate){
-    rate = Math.round(parseFloat(rate) * 100) / 100;
+    rate = Math.round(parseFloat(rate) * 100) / 100; // round to 2 decimal places
 
-    if(this.playbackRate != rate){
+    if(this.playbackRate !== rate){
       this.focusVideo();
       CustomCookie.rate = rate;
     }
     this.element.playbackRate = rate;
   }
 
-  focusVideo(){
-    this.element.focus();
-  }
+  focusVideo(){ this.element.focus(); }
 
   increasePlaybackRate(){
-    this.playbackRate =
-      this.playbackRate * CustomVideo.playbackScalar + CustomVideo.playbackAdder;
+    this.playbackRate = this.playbackRate * CustomVideo.playbackScalar + CustomVideo.playbackAdder;
   }
   decreasePlaybackRate(){
-    this.playbackRate =
-      this.playbackRate / CustomVideo.playbackScalar - CustomVideo.playbackAdder;
+    this.playbackRate = this.playbackRate / CustomVideo.playbackScalar - CustomVideo.playbackAdder;
   }
 
   seekTo(time){
@@ -73,16 +58,12 @@ class CustomVideo {
     this.focusVideo();
   }
   seekForward(event){
-    if(this.validateSeek(event)){
-      this.seekTo(this.time + CustomVideo.seekDuration);
-    }
+    if(this.validSeek(event)) this.seekTo(this.time + CustomVideo.seekDuration);
   }
   seekBackward(event){
-    if(this.validateSeek(event)){
-      this.seekTo(this.time - CustomVideo.seekDuration);
-    }
+    if(this.validSeek(event)) this.seekTo(this.time - CustomVideo.seekDuration);
   }
-  validateSeek(event){
+  validSeek(event){
     if(!event.metaKey){
       event.preventDefault();
       return true;
@@ -91,16 +72,14 @@ class CustomVideo {
     }
   }
 
-  interceptKeypress(event){
-    this.functionForKeypress(event)(event);
-  }
+  interceptKeypress(event){ this.functionForKeypress(event)(event); }
 
   functionForKeypress(event){
     const func = this.customFunctionMap[event.which];
     if(func && !CustomVideo.isInputFocused()){
       return func.bind(this);
     } else {
-      return ()=>{};
+      return ()=>{}; // no-op
     }
   }
 
@@ -130,20 +109,12 @@ class CustomVideo {
     }
   }
 
-  get loopPoints(){
-    return this._loopPoints = this._loopPoints || new Set;
-  }
-  get loopStart(){
-    return [...this.loopPoints].sort()[0];
-  }
-  get loopEnd(){
-    return [...this.loopPoints].sort()[1];
-  }
+  get loopPoints(){ return this._loopPoints = this._loopPoints || new Set; }
+  get loopStart(){ return [...this.loopPoints].sort()[0]; }
+  get loopEnd(){ return [...this.loopPoints].sort().reverse()[0]; }
 
   loop = ()=>{
-    if(this.time > this.loopEnd || this.time < this.loopStart){
-      this.time = this.loopStart;
-    }
+    if(this.time > this.loopEnd || this.time < this.loopStart) this.time = this.loopStart;
   }
 
   addBookmark(){
@@ -161,12 +132,8 @@ class CustomVideo {
       this.goToBookmarkTime(event);
     }
   }
-  removeBookmark(event){
-    event.currentTarget.remove();
-  }
-  goToBookmarkTime(event){
-    this.seekTo(event.currentTarget.value);
-  }
+  removeBookmark(event){ event.currentTarget.remove(); }
+  goToBookmarkTime(event){ this.seekTo(event.currentTarget.value); }
 
   constructor(video){
     if(!CustomVideo._domInit){
