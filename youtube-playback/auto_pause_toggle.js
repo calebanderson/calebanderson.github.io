@@ -62,5 +62,3 @@ CustomVideoCallbacks.addFunctionCallback('play',
     }
   }
 );
-
-export default AutoPauseToggle;

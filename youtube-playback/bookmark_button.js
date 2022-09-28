@@ -41,5 +41,3 @@ CustomVideoCallbacks.addSetterCallback('src',
     }
   }
 );
-
-export default BookmarkButton;

@@ -32,5 +32,3 @@ CustomVideoCallbacks.addFunctionCallback('play',
     }
   }
 );
-
-export default PlaybackRateDisplay;
