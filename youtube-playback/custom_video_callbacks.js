@@ -30,7 +30,7 @@ const CustomVideoCallbacks = {
     });
 
     const origProp = this.findCurrentProperty(propName);
-    let override = {configurable: true};
+    let override = { configurable: true };
     override[overrideKey] = function(val){
       origProp[overrideKey].call(this, val);
 

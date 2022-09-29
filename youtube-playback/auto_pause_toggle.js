@@ -23,7 +23,7 @@ class AutoPauseToggle extends CustomToggleGroup {
     super.attributeChangedCallback(name, _oldValue, _newValue);
 
     if(name === 'active') {
-      this.pending = true; // canceled downstream if "day mode"
+      this.pending = !this.active;
     } else if(name === 'pending') {
       this.pendingChanged();
     }
@@ -40,15 +40,13 @@ class AutoPauseToggle extends CustomToggleGroup {
     }
   }
 
-  get pending(){
-    return this.hasAttribute('pending');
-  }
+  get pending(){ return this.hasAttribute('pending'); }
 
   set pending(val){
-    if(this.active || !val){
-      this.removeAttribute('pending');
-    } else {
+    if(val){
       this.setAttribute('pending', '');
+    } else {
+      this.removeAttribute('pending');
     }
   }
 }
@@ -56,9 +54,11 @@ customElements.define('auto-pause-toggle', AutoPauseToggle);
 
 CustomVideoCallbacks.addFunctionCallback('play',
   function(val){
-    const pauserList = document.querySelectorAll('auto-pause-toggle');
-    for(const pauser of pauserList){
-      pauser.pending = true;
+    (window?.customVideo?.element || {}).onplay = function() {
+      const pauserList = document.querySelectorAll('auto-pause-toggle');
+      for (const pauser of pauserList) {
+        pauser.pending = !pauser.active;
+      }
     }
   }
 );

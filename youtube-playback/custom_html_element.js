@@ -2,7 +2,7 @@ class CustomHTMLElement extends HTMLElement {
   static stylesheet = 'custom_styles.css';
 
   // Apply custom CSS file to DOM body or shadow DOM
-  connectedCallback(){
+  connectedCallback() {
     const dom = this.getRootNode();
     if(!dom.querySelector(`link[href='${this.styleTag.href}']`)) {
       (dom.body || dom).appendChild(this.styleTag);
