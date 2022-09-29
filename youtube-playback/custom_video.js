@@ -11,7 +11,7 @@ class CustomVideo {
   static playbackAdder = 0.00003;
   static seekDuration = 5;
   static inputSelector = 'yt-user-mention-autosuggest-input';
-  static badgeContainerSelector = '#above-the-fold';
+  static badgeContainerSelector = '#above-the-fold, ytd-video-primary-info-renderer #container';
   static videoElementSelector = 'video[src]';
   static customElementContainerID = 'custom_element_container';
 
