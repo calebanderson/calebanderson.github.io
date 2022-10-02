@@ -27,7 +27,10 @@ Promise.all([
 });
 
 Promise.all([
-  repeatUntilPresent(() => document.querySelector(Constants.videoElementSelector), 250),
+  repeatUntilPresent(() => {
+    console.log(Constants.videoElementSelector);
+    document.querySelector(Constants.videoElementSelector);
+  }, 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
 ]).then(([video]) => {
   console.log('Old promise loaded');
