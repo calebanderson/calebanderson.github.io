@@ -14,9 +14,12 @@ function repeatUntilPresent(func, delay) {
   return new Promise(checkForPresence);
 }
 
+window.foo = 'thing';
+
 Promise.all([
   repeatUntilPresent(() => document.querySelector(CustomVideo.videoElementSelector), 250),
   repeatUntilPresent(() => document.querySelector(CustomVideo.badgeContainerSelector), 250),
 ]).then(([video]) => {
+  console.log(window.foo);
   window.customVideo = new CustomVideo(video);
 });
