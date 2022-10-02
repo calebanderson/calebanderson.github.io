@@ -15,9 +15,23 @@ function repeatUntilPresent(func, delay) {
   return new Promise(checkForPresence);
 }
 
+const scriptSelector = 'script[data-source="User JavaScript and CSS extension"]:not([src])';
+
+Promise.all([
+  repeatUntilPresent(() => document.querySelector(Constants.videoElementSelector), 250),
+  repeatUntilPresent(() => document.querySelector(scriptSelector), 250),
+  repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
+]).then(([video]) => {
+  console.log('Promise loaded');
+  window.customVideo = new CustomVideo(video);
+});
+
 Promise.all([
   repeatUntilPresent(() => document.querySelector(Constants.videoElementSelector), 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
 ]).then(([video]) => {
+  console.log('Old promise loaded');
   window.customVideo = new CustomVideo(video);
 });
+
+document.addEventListener('DOMContentLoaded', () => { console.log('DOMContentLoaded'); });
