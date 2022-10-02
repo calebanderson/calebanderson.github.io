@@ -6,10 +6,10 @@ class EndcardToggle extends CustomToggleGroup {
   constructor() {
     super();
 
-    this.onButton.textContent = new Constants().endcardsHidden;
+    this.onButton.textContent = Constants.endcardsHidden;
     this.onButton.addEventListener('click', () => this.toggle());
 
-    this.offButton.textContent = new Constants().endcardsShown;
+    this.offButton.textContent = Constants.endcardsShown;
     this.offButton.addEventListener('click', () => this.toggle());
   }
 

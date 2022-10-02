@@ -9,7 +9,7 @@ class PlaybackRateDisplay extends CustomBadge {
   }
 
   attributeChangedCallback() {
-    this.textContent = `${new Constants().ratePrefix} ${this.value.toFixed(2)}`;
+    this.textContent = `${Constants.ratePrefix} ${this.value.toFixed(2)}`;
   }
 }
 customElements.define('playback-rate-display', PlaybackRateDisplay);

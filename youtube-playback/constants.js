@@ -12,9 +12,12 @@ const DefaultConstants = {
   endcardsShown: 'Endcards Shown',
 };
 
-class Constants {
-  constructor() {
-    Object.assign(this, { ...DefaultConstants, ...window.YTPOptions });
-  }
-}
+const Constants = {
+  lookup(key) { return { ...DefaultConstants, ...window.YTPOptions }[key]; },
+};
+
+Object.keys(DefaultConstants).forEach((key) => {
+  Object.defineProperty(Constants, key, { get() { return this.lookup(key); } });
+});
+
 export default Constants;

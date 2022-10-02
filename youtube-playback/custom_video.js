@@ -21,7 +21,7 @@ class CustomVideo {
       this.customElementContainer = document.createElement('div');
       this.customElementContainer.id = CustomVideo.customElementContainerID;
 
-      const outerContainer = document.querySelector(new Constants().badgeContainerSelector);
+      const outerContainer = document.querySelector(Constants.badgeContainerSelector);
       outerContainer.prepend(this.customElementContainer);
 
       const playbackRateDisplay = document.createElement('playback-rate-display');
@@ -75,10 +75,7 @@ class CustomVideo {
   get loopStart() { return [...this.loopPoints].sort()[0]; }
   get loopEnd() { return [...this.loopPoints].sort().reverse()[0]; }
 
-  get scalar() {
-    const constants = new Constants();
-    return constants.rateScalar + constants.rateAdder / this.playbackRate;
-  }
+  get scalar() { return Constants.rateScalar + Constants.rateAdder / this.playbackRate; }
 
   focusVideo() { this.element.focus(); }
 
@@ -92,8 +89,8 @@ class CustomVideo {
     return true;
   }
 
-  seekForward(event) { this.seekTo(this.time + new Constants().seekDuration, event); }
-  seekBackward(event) { this.seekTo(this.time - new Constants().seekDuration, event); }
+  seekForward(event) { this.seekTo(this.time + Constants.seekDuration, event); }
+  seekBackward(event) { this.seekTo(this.time - Constants.seekDuration, event); }
 
   validSeek(event) {
     if (!event.metaKey) {

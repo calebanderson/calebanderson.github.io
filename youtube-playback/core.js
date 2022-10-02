@@ -16,8 +16,8 @@ function repeatUntilPresent(func, delay) {
 }
 
 Promise.all([
-  repeatUntilPresent(() => document.querySelector(new Constants().videoElementSelector), 250),
-  repeatUntilPresent(() => document.querySelector(new Constants().badgeContainerSelector), 250),
+  repeatUntilPresent(() => document.querySelector(Constants.videoElementSelector), 250),
+  repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
 ]).then(([video]) => {
   window.customVideo = new CustomVideo(video);
 });

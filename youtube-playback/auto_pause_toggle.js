@@ -33,7 +33,7 @@ class AutoPauseToggle extends CustomToggleGroup {
     this.timeoutPromise = setTimeout(() => {
       this.pending = false;
       window.customVideo.element.pause();
-    }, new Constants().autoPauseInterval * 60 * 1000);
+    }, Constants.autoPauseInterval * 60 * 1000);
   }
 }
 customElements.define('auto-pause-toggle', AutoPauseToggle);
