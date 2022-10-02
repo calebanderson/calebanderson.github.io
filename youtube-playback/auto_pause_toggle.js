@@ -1,9 +1,9 @@
 import CustomVideoCallbacks from './custom_video_callbacks.js';
 import CustomToggleGroup from './custom_toggle_group.js';
+import Constants from './constants.js';
 
 class AutoPauseToggle extends CustomToggleGroup {
   // active = on = day mode
-  static interval = 15 * 60 * 1000;
   static get observedAttributes() { return ['active', 'pending']; }
 
   constructor() {
@@ -19,8 +19,8 @@ class AutoPauseToggle extends CustomToggleGroup {
   get pending() { return this.hasAttribute('pending'); }
   set pending(val) { val ? this.setAttribute('pending', '') : this.removeAttribute('pending'); }
 
-  attributeChangedCallback(name, _oldValue, _newValue) {
-    super.attributeChangedCallback(name, _oldValue, _newValue);
+  attributeChangedCallback(name) {
+    super.attributeChangedCallback();
 
     if (name === 'active') this.pending = !this.active;
     if (name === 'pending') this.pendingChanged();
@@ -33,7 +33,7 @@ class AutoPauseToggle extends CustomToggleGroup {
     this.timeoutPromise = setTimeout(() => {
       this.pending = false;
       window.customVideo.element.pause();
-    }, AutoPauseToggle.interval);
+    }, new Constants().autoPauseInterval * 60 * 1000);
   }
 }
 customElements.define('auto-pause-toggle', AutoPauseToggle);

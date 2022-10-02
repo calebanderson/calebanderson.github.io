@@ -1,7 +1,7 @@
 import './custom_toggle_button.js';
 import CustomHTMLElement from './custom_html_element.js';
 
-class CustomToggleGroup extends CustomHTMLElement {
+export default class CustomToggleGroup extends CustomHTMLElement {
   static get observedAttributes() { return ['active']; }
 
   constructor() {
@@ -38,5 +38,3 @@ class CustomToggleGroup extends CustomHTMLElement {
     }
   }
 }
-
-export default CustomToggleGroup;

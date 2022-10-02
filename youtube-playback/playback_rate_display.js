@@ -1,16 +1,15 @@
 import CustomBadge from './custom_badge.js';
 import CustomVideoCallbacks from './custom_video_callbacks.js';
+import Constants from './constants.js';
 
 class PlaybackRateDisplay extends CustomBadge {
-  static displayPrefix = 'Playback Rate:';
-
   connectedCallback() {
     super.connectedCallback();
     this.classList.add('playback-rate-display');
   }
 
   attributeChangedCallback() {
-    this.textContent = `${PlaybackRateDisplay.displayPrefix} ${this.value.toFixed(2)}`;
+    this.textContent = `${new Constants().ratePrefix} ${this.value.toFixed(2)}`;
   }
 }
 customElements.define('playback-rate-display', PlaybackRateDisplay);

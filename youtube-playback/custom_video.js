@@ -1,5 +1,5 @@
 import CustomCookie from './custom_cookie.js';
-
+import Constants from './constants.js';
 import './bookmark_button.js';
 import './playback_rate_display.js';
 import './endcard_toggle.js';
@@ -8,12 +8,6 @@ import './auto_pause_toggle.js';
 window.customCookie = CustomCookie;
 
 class CustomVideo {
-  static rateScalar = 1.2599;
-  static rateAdder = 0.00003;
-  static seekDuration = 5;
-  static inputSelector = 'yt-user-mention-autosuggest-input';
-  static badgeContainerSelector = '#above-the-fold, ytd-video-primary-info-renderer #container';
-  static videoElementSelector = 'video[src]';
   static customElementContainerID = 'custom_element_container';
   static #domInit;
 
@@ -27,7 +21,7 @@ class CustomVideo {
       this.customElementContainer = document.createElement('div');
       this.customElementContainer.id = CustomVideo.customElementContainerID;
 
-      const outerContainer = document.querySelector(CustomVideo.badgeContainerSelector);
+      const outerContainer = document.querySelector(new Constants().badgeContainerSelector);
       outerContainer.prepend(this.customElementContainer);
 
       const playbackRateDisplay = document.createElement('playback-rate-display');
@@ -65,11 +59,9 @@ class CustomVideo {
   }
 
   get time() { return this.element.currentTime; }
-
   set time(val) { this.element.currentTime = val; }
 
   get playbackRate() { return this.element.playbackRate; }
-
   set playbackRate(val) {
     const rate = Math.round(parseFloat(val) * 100) / 100; // round to 2 decimal places
 
@@ -83,19 +75,25 @@ class CustomVideo {
   get loopStart() { return [...this.loopPoints].sort()[0]; }
   get loopEnd() { return [...this.loopPoints].sort().reverse()[0]; }
 
-  focusVideo() { this.element.focus(); }
-
-  // Pretty sure there's a constant-ish value that could be calculated: rate (/ or *) (scalar + adder / rate)
-  increaseRate() { this.playbackRate = this.playbackRate * CustomVideo.rateScalar + CustomVideo.rateAdder; }
-  decreaseRate() { this.playbackRate = this.playbackRate / CustomVideo.rateScalar - CustomVideo.rateAdder; }
-
-  seekTo(time) {
-    this.time = time;
-    this.focusVideo();
+  get scalar() {
+    const constants = new Constants();
+    return constants.rateScalar + constants.rateAdder / this.playbackRate;
   }
 
-  seekForward(event) { if (this.validSeek(event)) this.seekTo(this.time + CustomVideo.seekDuration); }
-  seekBackward(event) { if (this.validSeek(event)) this.seekTo(this.time - CustomVideo.seekDuration); }
+  focusVideo() { this.element.focus(); }
+
+  increaseRate() { this.playbackRate *= this.scalar; }
+  decreaseRate() { this.playbackRate /= this.scalar; }
+
+  seekTo(time, event) {
+    if (event && !this.validSeek(event)) return false;
+    this.time = time;
+    this.focusVideo();
+    return true;
+  }
+
+  seekForward(event) { this.seekTo(this.time + new Constants().seekDuration, event); }
+  seekBackward(event) { this.seekTo(this.time - new Constants().seekDuration, event); }
 
   validSeek(event) {
     if (!event.metaKey) {
@@ -147,9 +145,7 @@ class CustomVideo {
     this.customElementContainer.append(button);
   }
 
-  bookmarkClick = (e) => { e.metaKey ? this.removeBookmark(e) : this.goToBookmarkTime(e); };
-  removeBookmark(e) { e.currentTarget.remove(); }
-  goToBookmarkTime(e) { this.seekTo(e.currentTarget.value); }
+  bookmarkClick = (e) => { this.seekTo(e.currentTarget.value, e) || e.currentTarget.remove(); };
 }
 
 export default CustomVideo;

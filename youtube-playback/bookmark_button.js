@@ -1,5 +1,6 @@
 import CustomBadge from './custom_badge.js';
 import CustomVideoCallbacks from './custom_video_callbacks.js';
+import Constants from './constants.js';
 
 class BookmarkButton extends CustomBadge {
   static displayPrefix = 'Go To';
@@ -13,7 +14,7 @@ class BookmarkButton extends CustomBadge {
   }
 
   attributeChangedCallback() {
-    this.textContent = `${BookmarkButton.displayPrefix} ${this.formatTime(this.value)}`;
+    this.textContent = `${new Constants().bookmarkPrefix} ${this.formatTime(this.value)}`;
   }
 
   formatTime(time) {
