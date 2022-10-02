@@ -6,80 +6,80 @@
 //   callbacks that are applied to existing video elements, and modify the constructor to apply them on creation.
 
 const CustomVideoCallbacks = {
-  addSetterCallback(propName, func){
+  addSetterCallback(propName, func) {
     this.registerProp(propName);
     this.callbackList(propName).add(func);
   },
 
-  addFunctionCallback(funcName, func){
+  addFunctionCallback(funcName, func) {
     this.registerFunc(funcName);
     this.callbackList(funcName).add(func);
   },
 
-  get registeredCallbacks(){
+  get registeredCallbacks() {
     return this._registeredCallbacks = this._registeredCallbacks || [];
   },
 
   registerCallback(propName, overrideKey) {
-    if(this.registeredCallbacks.includes(propName)) return;
-    if(typeof(propName) !== 'string') throw new Error('argument must be a string');
+    if (this.registeredCallbacks.includes(propName)) return;
+    if (typeof (propName) !== 'string') throw new Error('argument must be a string');
 
     Object.defineProperty(this, this.callbackListName(propName), {
-      value: new Set,
-      configurable: true
+      value: new Set(),
+      configurable: true,
     });
 
     const origProp = this.findCurrentProperty(propName);
-    let override = { configurable: true };
-    override[overrideKey] = function(val){
+    const override = { configurable: true };
+    override[overrideKey] = function (val) {
       origProp[overrideKey].call(this, val);
 
       const callbacks = CustomVideoCallbacks.callbackList(propName);
-      for(const callback of callbacks){
+      for (const callback of callbacks) {
         callback.call(this, val);
       }
     };
 
-    const newProp = Object.assign({}, origProp, override);
+    const newProp = { ...origProp, ...override };
     Object.defineProperty(HTMLVideoElement.prototype, propName, newProp);
 
     this.registeredCallbacks.push(propName);
   },
 
-  registerProp(propName){
+  registerProp(propName) {
     this.registerCallback(propName, 'set');
   },
 
-  registerFunc(funcName){
+  registerFunc(funcName) {
     this.registerCallback(funcName, 'value');
   },
 
-  callbackList(propName){
+  callbackList(propName) {
     return this[this.callbackListName(propName)];
   },
-  callbackListName(propName){
-    return 'onSet' + propName.charAt(0).toUpperCase() + propName.slice(1);
+  callbackListName(propName) {
+    return `onSet${propName.charAt(0).toUpperCase()}${propName.slice(1)}`;
   },
 
-  findCurrentProperty(propName){
+  findCurrentProperty(propName) {
     let elementProto = HTMLVideoElement.prototype;
     let property;
     let depth = 0;
 
-    while(elementProto && !property){
+    while (elementProto && !property) {
       property = Object.getOwnPropertyDescriptor(elementProto, propName);
       elementProto = Object.getPrototypeOf(elementProto);
       depth++;
     }
 
-    if(property && !property.configurable && depth === 1){
+    if (property && !property.configurable && depth === 1) {
       throw new Error(`cannot override behavior for '${propName}'`);
     }
-    if(!elementProto){
+    if (!elementProto) {
       throw new Error(`cannot find property '${propName}'`);
     }
     return property;
-  }
-}
+  },
+};
 
 export default CustomVideoCallbacks;

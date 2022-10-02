@@ -1,7 +1,7 @@
 import CustomBadge from './custom_badge.js';
 
 class CustomToggleButton extends CustomBadge {
-  connectedCallback(){
+  connectedCallback() {
     super.connectedCallback();
 
     this.classList.add('toggle-button');

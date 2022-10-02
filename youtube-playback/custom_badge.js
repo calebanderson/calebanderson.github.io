@@ -1,41 +1,44 @@
 import CustomHTMLElement from './custom_html_element.js';
 
 class CustomBadge extends CustomHTMLElement {
-  connectedCallback(){
-    super.connectedCallback();
-    this.classList.add('custom-action-badge');
+  static get observedAttributes() {
+    return ['value'];
   }
 
-  get value(){
+  get value() {
     return parseFloat(this.getAttribute('value'));
   }
-  set value(val){
+
+  set value(val) {
     this.setAttribute('value', val);
   }
 
-  get hidden(){
+  get hidden() {
     return this.hasAttribute('hidden');
   }
-  set hidden(val){
-    if(!!val){
+
+  set hidden(val) {
+    if (val) {
       this.setAttribute('hidden', '');
     } else {
       this.removeAttribute('hidden');
     }
   }
 
-  hide(){
+  connectedCallback() {
+    super.connectedCallback();
+    this.classList.add('custom-action-badge');
+  }
+
+  hide() {
     this.hidden = true;
   }
-  show(){
+
+  show() {
     this.hidden = false;
   }
 
-  static get observedAttributes() {
-    return ['value'];
-  }
-
-  attributeChangedCallback(_name, _oldValue, _newValue){
+  attributeChangedCallback() {
     this.textContent = this.value;
   }
 }

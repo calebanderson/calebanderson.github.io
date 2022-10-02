@@ -9,56 +9,56 @@ class AutoPauseToggle extends CustomToggleGroup {
     return ['active', 'pending'];
   }
 
-  constructor(){
+  constructor() {
     super();
 
     this.onButton.textContent = 'Night Mode';
-    this.onButton.addEventListener('click', e => this.toggle());
+    this.onButton.addEventListener('click', () => this.toggle());
 
     this.offButton.textContent = 'Day Mode';
-    this.offButton.addEventListener('click', e => this.toggle());
+    this.offButton.addEventListener('click', () => this.toggle());
   }
 
-  attributeChangedCallback(name, _oldValue, _newValue){
-    super.attributeChangedCallback(name, _oldValue, _newValue);
+  get pending() { return this.hasAttribute('pending'); }
 
-    if(name === 'active') {
-      this.pending = !this.active;
-    } else if(name === 'pending') {
-      this.pendingChanged();
-    }
-  }
-
-  pendingChanged(){
-    clearInterval(this.timeoutPromise);
-
-    if(this.pending){
-      this.timeoutPromise = setTimeout(function(){
-        this.pending = false;
-        window.customVideo.element.pause();
-      }.bind(this), AutoPauseToggle.interval);
-    }
-  }
-
-  get pending(){ return this.hasAttribute('pending'); }
-
-  set pending(val){
-    if(val){
+  set pending(val) {
+    if (val) {
       this.setAttribute('pending', '');
     } else {
       this.removeAttribute('pending');
     }
   }
+
+  attributeChangedCallback(name, _oldValue, _newValue) {
+    super.attributeChangedCallback(name, _oldValue, _newValue);
+
+    if (name === 'active') {
+      this.pending = !this.active;
+    } else if (name === 'pending') {
+      this.pendingChanged();
+    }
+  }
+
+  pendingChanged() {
+    clearInterval(this.timeoutPromise);
+
+    if (this.pending) {
+      this.timeoutPromise = setTimeout(() => {
+        this.pending = false;
+        window.customVideo.element.pause();
+      }, AutoPauseToggle.interval);
+    }
+  }
 }
 customElements.define('auto-pause-toggle', AutoPauseToggle);
 
-CustomVideoCallbacks.addFunctionCallback('play',
-  function(val){
-    (window?.customVideo?.element || {}).onplay = function() {
-      const pauserList = document.querySelectorAll('auto-pause-toggle');
-      for (const pauser of pauserList) {
+CustomVideoCallbacks.addFunctionCallback(
+  'play',
+  () => {
+    (window?.customVideo?.element || {}).onplay = () => {
+      document.querySelectorAll('auto-pause-toggle').forEach((pauser) => {
         pauser.pending = !pauser.active;
-      }
-    }
-  }
+      });
+    };
+  },
 );
