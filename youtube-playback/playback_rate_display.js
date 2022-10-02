@@ -9,28 +9,20 @@ class PlaybackRateDisplay extends CustomBadge {
     this.classList.add('playback-rate-display');
   }
 
-  attributeChangedCallback(_name, _oldValue, _newValue) {
+  attributeChangedCallback() {
     this.textContent = `${PlaybackRateDisplay.displayPrefix} ${this.value.toFixed(2)}`;
   }
 }
 customElements.define('playback-rate-display', PlaybackRateDisplay);
 
-CustomVideoCallbacks.addSetterCallback(
-  'playbackRate',
-  (val) => {
-    const displayList = document.querySelectorAll('playback-rate-display');
-    for (const display of displayList) {
-      display.value = val;
-    }
-  },
-);
+CustomVideoCallbacks.addSetterCallback('playbackRate', (val) => {
+  document.querySelectorAll('playback-rate-display').forEach((display) => {
+    display.value = val;
+  });
+});
 
-CustomVideoCallbacks.addFunctionCallback(
-  'play',
-  (val) => {
-    // if(window.customVideo && window.customVideo.element && window.customCookie) {
-    if (window.customVideo && window.customVideo.element) {
-      window.customVideo.element.playbackRate = window.customCookie.rate;
-    }
-  },
-);
+CustomVideoCallbacks.addFunctionCallback('play', () => {
+  if (window.customVideo && window.customVideo.element) {
+    window.customVideo.element.playbackRate = window.customCookie.rate;
+  }
+});

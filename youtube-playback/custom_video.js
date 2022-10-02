@@ -8,13 +8,14 @@ import './auto_pause_toggle.js';
 window.customCookie = CustomCookie;
 
 class CustomVideo {
-  static playbackScalar = 1.2599;
-  static playbackAdder = 0.00003;
+  static rateScalar = 1.2599;
+  static rateAdder = 0.00003;
   static seekDuration = 5;
   static inputSelector = 'yt-user-mention-autosuggest-input';
   static badgeContainerSelector = '#above-the-fold, ytd-video-primary-info-renderer #container';
   static videoElementSelector = 'video[src]';
   static customElementContainerID = 'custom_element_container';
+  static #domInit;
 
   static isInputFocused() {
     const inputs = document.querySelectorAll(this.inputSelector);
@@ -22,7 +23,7 @@ class CustomVideo {
   }
 
   constructor(video) {
-    if (!CustomVideo._domInit) {
+    if (!CustomVideo.#domInit) {
       this.customElementContainer = document.createElement('div');
       this.customElementContainer.id = CustomVideo.customElementContainerID;
 
@@ -38,7 +39,7 @@ class CustomVideo {
       const autoPauseToggle = document.createElement('auto-pause-toggle');
       this.customElementContainer.append(autoPauseToggle);
 
-      CustomVideo._domInit = true;
+      CustomVideo.#domInit = true;
     }
 
     this.element = video;
@@ -48,21 +49,20 @@ class CustomVideo {
     document.addEventListener('keydown', this.interceptKeypress.bind(this), true);
   }
 
+  element;
+  loopPoints = new Set();
+
   get customFunctionMap() {
     return {
       37: this.seekBackward,
       39: this.seekForward,
-      219: this.decreasePlaybackRate,
-      221: this.increasePlaybackRate,
+      219: this.decreaseRate,
+      221: this.increaseRate,
       85: this.addBookmark,
       79: this.addLoopPoint,
       80: this.clearLoopPoints,
     };
   }
-
-  get element() { return this._element; }
-
-  set element(video) { this._element = video; }
 
   get time() { return this.element.currentTime; }
 
@@ -70,8 +70,8 @@ class CustomVideo {
 
   get playbackRate() { return this.element.playbackRate; }
 
-  set playbackRate(rate) {
-    rate = Math.round(parseFloat(rate) * 100) / 100; // round to 2 decimal places
+  set playbackRate(val) {
+    const rate = Math.round(parseFloat(val) * 100) / 100; // round to 2 decimal places
 
     if (this.playbackRate !== rate) {
       this.focusVideo();
@@ -80,34 +80,22 @@ class CustomVideo {
     this.element.playbackRate = rate;
   }
 
-  get loopPoints() { return this._loopPoints = this._loopPoints || new Set(); }
-
   get loopStart() { return [...this.loopPoints].sort()[0]; }
-
   get loopEnd() { return [...this.loopPoints].sort().reverse()[0]; }
 
   focusVideo() { this.element.focus(); }
 
-  increasePlaybackRate() {
-    this.playbackRate = this.playbackRate * CustomVideo.playbackScalar + CustomVideo.playbackAdder;
-  }
-
-  decreasePlaybackRate() {
-    this.playbackRate = this.playbackRate / CustomVideo.playbackScalar - CustomVideo.playbackAdder;
-  }
+  // Pretty sure there's a constant-ish value that could be calculated: rate (/ or *) (scalar + adder / rate)
+  increaseRate() { this.playbackRate = this.playbackRate * CustomVideo.rateScalar + CustomVideo.rateAdder; }
+  decreaseRate() { this.playbackRate = this.playbackRate / CustomVideo.rateScalar - CustomVideo.rateAdder; }
 
   seekTo(time) {
     this.time = time;
     this.focusVideo();
   }
 
-  seekForward(event) {
-    if (this.validSeek(event)) this.seekTo(this.time + CustomVideo.seekDuration);
-  }
-
-  seekBackward(event) {
-    if (this.validSeek(event)) this.seekTo(this.time - CustomVideo.seekDuration);
-  }
+  seekForward(event) { if (this.validSeek(event)) this.seekTo(this.time + CustomVideo.seekDuration); }
+  seekBackward(event) { if (this.validSeek(event)) this.seekTo(this.time - CustomVideo.seekDuration); }
 
   validSeek(event) {
     if (!event.metaKey) {
@@ -121,9 +109,7 @@ class CustomVideo {
 
   functionForKeypress(event) {
     const func = this.customFunctionMap[event.which];
-    if (func && !CustomVideo.isInputFocused()) {
-      return func.bind(this);
-    }
+    if (func && !CustomVideo.isInputFocused()) return func.bind(this);
     return () => {}; // no-op
   }
 
@@ -161,17 +147,9 @@ class CustomVideo {
     this.customElementContainer.append(button);
   }
 
-  bookmarkClick = (event) => {
-    if (event.metaKey) {
-      this.removeBookmark(event);
-    } else {
-      this.goToBookmarkTime(event);
-    }
-  };
-
-  removeBookmark(event) { event.currentTarget.remove(); }
-
-  goToBookmarkTime(event) { this.seekTo(event.currentTarget.value); }
+  bookmarkClick = (e) => { e.metaKey ? this.removeBookmark(e) : this.goToBookmarkTime(e); };
+  removeBookmark(e) { e.currentTarget.remove(); }
+  goToBookmarkTime(e) { this.seekTo(e.currentTarget.value); }
 }
 
 export default CustomVideo;

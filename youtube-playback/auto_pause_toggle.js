@@ -3,11 +3,8 @@ import CustomToggleGroup from './custom_toggle_group.js';
 
 class AutoPauseToggle extends CustomToggleGroup {
   // active = on = day mode
-  static interval = 900000; // 15 minutes
-
-  static get observedAttributes() {
-    return ['active', 'pending'];
-  }
+  static interval = 15 * 60 * 1000;
+  static get observedAttributes() { return ['active', 'pending']; }
 
   constructor() {
     super();
@@ -20,45 +17,30 @@ class AutoPauseToggle extends CustomToggleGroup {
   }
 
   get pending() { return this.hasAttribute('pending'); }
-
-  set pending(val) {
-    if (val) {
-      this.setAttribute('pending', '');
-    } else {
-      this.removeAttribute('pending');
-    }
-  }
+  set pending(val) { val ? this.setAttribute('pending', '') : this.removeAttribute('pending'); }
 
   attributeChangedCallback(name, _oldValue, _newValue) {
     super.attributeChangedCallback(name, _oldValue, _newValue);
 
-    if (name === 'active') {
-      this.pending = !this.active;
-    } else if (name === 'pending') {
-      this.pendingChanged();
-    }
+    if (name === 'active') this.pending = !this.active;
+    if (name === 'pending') this.pendingChanged();
   }
 
   pendingChanged() {
     clearInterval(this.timeoutPromise);
+    if (!this.pending) return;
 
-    if (this.pending) {
-      this.timeoutPromise = setTimeout(() => {
-        this.pending = false;
-        window.customVideo.element.pause();
-      }, AutoPauseToggle.interval);
-    }
+    this.timeoutPromise = setTimeout(() => {
+      this.pending = false;
+      window.customVideo.element.pause();
+    }, AutoPauseToggle.interval);
   }
 }
 customElements.define('auto-pause-toggle', AutoPauseToggle);
 
-CustomVideoCallbacks.addFunctionCallback(
-  'play',
-  () => {
-    (window?.customVideo?.element || {}).onplay = () => {
-      document.querySelectorAll('auto-pause-toggle').forEach((pauser) => {
-        pauser.pending = !pauser.active;
-      });
-    };
-  },
-);
+CustomVideoCallbacks.addFunctionCallback('play', () => {
+  (window?.customVideo?.element || {}).onplay = () => {
+    const pauserList = document.querySelectorAll('auto-pause-toggle');
+    pauserList.forEach((pauser) => { pauser.pending = !pauser.active; });
+  };
+});

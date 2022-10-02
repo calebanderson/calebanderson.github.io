@@ -3,7 +3,7 @@ import CustomVideo from './custom_video.js';
 
 // Wanted to try out promises... obviously not the most useful implementation...
 function repeatUntilPresent(func, delay) {
-  const checkForPresence = function (resolve) {
+  const checkForPresence = (resolve) => {
     const result = func();
     if (result) {
       resolve(result);

@@ -6,20 +6,16 @@ class EndcardToggle extends CustomToggleGroup {
     super();
 
     this.onButton.textContent = 'Endcards Hidden';
-    this.onButton.addEventListener('click', (e) => this.toggle());
+    this.onButton.addEventListener('click', () => this.toggle());
 
     this.offButton.textContent = 'Endcards Shown';
-    this.offButton.addEventListener('click', (e) => this.toggle());
+    this.offButton.addEventListener('click', () => this.toggle());
   }
 
-  attributeChangedCallback(_name, _oldValue, _newValue) {
-    super.attributeChangedCallback(_name, _oldValue, _newValue);
-
-    if (this.active) {
-      document.body.removeAttribute('hide_endcard');
-    } else {
-      document.body.setAttribute('hide_endcard', '');
-    }
+  attributeChangedCallback() {
+    super.attributeChangedCallback();
+    const { body } = document;
+    this.active ? body.removeAttribute('hide_endcard') : body.setAttribute('hide_endcard', '');
   }
 }
 customElements.define('endcard-toggle', EndcardToggle);

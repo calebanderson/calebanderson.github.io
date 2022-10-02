@@ -2,9 +2,7 @@ import './custom_toggle_button.js';
 import CustomHTMLElement from './custom_html_element.js';
 
 class CustomToggleGroup extends CustomHTMLElement {
-  static get observedAttributes() {
-    return ['active'];
-  }
+  static get observedAttributes() { return ['active']; }
 
   constructor() {
     super();
@@ -20,28 +18,17 @@ class CustomToggleGroup extends CustomHTMLElement {
     shadow.appendChild(this.offButton);
   }
 
-  get active() {
-    return this.hasAttribute('active');
-  }
-
-  set active(val) {
-    if (val) {
-      this.setAttribute('active', '');
-    } else {
-      this.removeAttribute('active');
-    }
-  }
+  get active() { return this.hasAttribute('active'); }
+  set active(val) { val ? this.setAttribute('active', '') : this.removeAttribute('active'); }
 
   connectedCallback() {
     super.connectedCallback();
     this.active = true;
   }
 
-  toggle() {
-    this.active = !this.active;
-  }
+  toggle() { this.active = !this.active; }
 
-  attributeChangedCallback(_name, _oldValue, _newValue) {
+  attributeChangedCallback() {
     if (this.active) {
       this.onButton.hide();
       this.offButton.show();

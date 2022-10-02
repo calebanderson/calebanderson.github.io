@@ -2,10 +2,7 @@ const CustomCookie = {
   rateKey: 'custom_yt_speed',
   rateRegex: /custom_yt_speed=(\d+(?:\.\d+)?)(?:;|$)/,
 
-  set rate(val) {
-    document.cookie = `${this.rateKey}=${val}`;
-  },
-
+  set rate(val) { document.cookie = `${this.rateKey}=${val}`; },
   get rate() {
     const rateMatch = document.cookie.match(this.rateRegex);
     if (rateMatch && rateMatch[1]) {

@@ -16,9 +16,7 @@ const CustomVideoCallbacks = {
     this.callbackList(funcName).add(func);
   },
 
-  get registeredCallbacks() {
-    return this._registeredCallbacks = this._registeredCallbacks || [];
-  },
+  registeredCallbacks: [],
 
   registerCallback(propName, overrideKey) {
     if (this.registeredCallbacks.includes(propName)) return;
@@ -31,13 +29,12 @@ const CustomVideoCallbacks = {
 
     const origProp = this.findCurrentProperty(propName);
     const override = { configurable: true };
-    override[overrideKey] = function (val) {
+    override[overrideKey] = function wrappedProp(val) {
       origProp[overrideKey].call(this, val);
 
-      const callbacks = CustomVideoCallbacks.callbackList(propName);
-      for (const callback of callbacks) {
+      CustomVideoCallbacks.callbackList(propName).forEach((callback) => {
         callback.call(this, val);
-      }
+      });
     };
 
     const newProp = { ...origProp, ...override };
@@ -46,20 +43,11 @@ const CustomVideoCallbacks = {
     this.registeredCallbacks.push(propName);
   },
 
-  registerProp(propName) {
-    this.registerCallback(propName, 'set');
-  },
+  registerProp(propName) { this.registerCallback(propName, 'set'); },
+  registerFunc(funcName) { this.registerCallback(funcName, 'value'); },
 
-  registerFunc(funcName) {
-    this.registerCallback(funcName, 'value');
-  },
-
-  callbackList(propName) {
-    return this[this.callbackListName(propName)];
-  },
-  callbackListName(propName) {
-    return `onSet${propName.charAt(0).toUpperCase()}${propName.slice(1)}`;
-  },
+  callbackList(propName) { return this[this.callbackListName(propName)]; },
+  callbackListName(propName) { return `onSet${propName.charAt(0).toUpperCase()}${propName.slice(1)}`; },
 
   findCurrentProperty(propName) {
     let elementProto = HTMLVideoElement.prototype;
@@ -69,15 +57,12 @@ const CustomVideoCallbacks = {
     while (elementProto && !property) {
       property = Object.getOwnPropertyDescriptor(elementProto, propName);
       elementProto = Object.getPrototypeOf(elementProto);
-      depth++;
+      depth += 1;
     }
 
-    if (property && !property.configurable && depth === 1) {
-      throw new Error(`cannot override behavior for '${propName}'`);
-    }
-    if (!elementProto) {
-      throw new Error(`cannot find property '${propName}'`);
-    }
+    if (!elementProto) throw new Error(`cannot find property '${propName}'`);
+    if (!property.configurable && depth === 1) throw new Error(`cannot override behavior for '${propName}'`);
+
     return property;
   },
 };
