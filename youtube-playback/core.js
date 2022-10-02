@@ -18,7 +18,10 @@ function repeatUntilPresent(func, delay) {
 const scriptSelector = 'script[data-source="User JavaScript and CSS extension"]:not([src])';
 
 Promise.all([
-  repeatUntilPresent(() => document.querySelector(Constants.videoElementSelector), 250),
+  repeatUntilPresent(() => {
+    console.log(`New: ${Constants.videoElementSelector}`);
+    document.querySelector(Constants.videoElementSelector);
+  }, 250),
   repeatUntilPresent(() => document.querySelector(scriptSelector), 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
 ]).then(([video]) => {
@@ -28,7 +31,7 @@ Promise.all([
 
 Promise.all([
   repeatUntilPresent(() => {
-    console.log(Constants.videoElementSelector);
+    console.log(`Old: ${Constants.videoElementSelector}`);
     document.querySelector(Constants.videoElementSelector);
   }, 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
