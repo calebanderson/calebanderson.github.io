@@ -29,6 +29,6 @@ customElements.define('bookmark-button', BookmarkButton);
 
 CustomVideoCallbacks.addSetterCallback('src', () => {
   document.querySelectorAll('bookmark-button').forEach((bookmark) => {
-    bookmark.videoUrl === this.baseURI ? bookmark.show() : bookmark.hide();
+    bookmark.videoUrl === document.baseURI ? bookmark.show() : bookmark.hide();
   });
 });
