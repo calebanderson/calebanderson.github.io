@@ -15,13 +15,8 @@ function repeatUntilPresent(func, delay) {
   return new Promise(checkForPresence);
 }
 
-function mountWhenReady() {
-  repeatUntilPresent(() => {
-    console.log('Searching DOM for required elements');
-    return document.querySelector(Constants.badgeContainerSelector)
-        && document.querySelector(Constants.videoElementSelector);
-  }, 250).then((video) => { window.customVideo = new CustomVideo(video); });
-}
-
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountWhenReady);
-else mountWhenReady();
+repeatUntilPresent(() => (
+  document.readyState !== 'loading' // Used for checking if DOMContentLoaded has already fired
+  && document.querySelector(Constants.badgeContainerSelector)
+  && document.querySelector(Constants.videoElementSelector)
+), 250).then((video) => { window.customVideo = new CustomVideo(video); });
