@@ -9,10 +9,10 @@ class AutoPauseToggle extends CustomToggleGroup {
   constructor() {
     super();
 
-    this.onButton.textContent = 'Night Mode';
+    this.onButton.textContent = Constants.autoPauseOn;
     this.onButton.addEventListener('click', () => this.toggle());
 
-    this.offButton.textContent = 'Day Mode';
+    this.offButton.textContent = Constants.autoPauseOff;
     this.offButton.addEventListener('click', () => this.toggle());
   }
 

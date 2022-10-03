@@ -47,15 +47,19 @@ class CustomVideo {
   loopPoints = new Set();
 
   get customFunctionMap() {
-    return {
-      37: this.seekBackward,
-      39: this.seekForward,
-      219: this.decreaseRate,
-      221: this.increaseRate,
-      85: this.addBookmark,
-      79: this.addLoopPoint,
-      80: this.clearLoopPoints,
-    };
+    const expandedMap = {};
+    [
+      [Constants.addBookmark, this.addBookmark],
+      [Constants.seekForward, this.seekForward],
+      [Constants.seekBackward, this.seekBackward],
+      [Constants.increaseRate, this.increaseRate],
+      [Constants.decreaseRate, this.decreaseRate],
+      [Constants.addLoopPoint, this.addLoopPoint],
+      [Constants.clearLoopPoints, this.clearLoopPoints],
+    ].forEach(([keys, func]) => {
+      [...keys].forEach((key) => { expandedMap[key] = func; });
+    });
+    return expandedMap;
   }
 
   get time() { return this.element.currentTime; }
@@ -103,7 +107,7 @@ class CustomVideo {
   interceptKeypress(event) { this.functionForKeypress(event)(event); }
 
   functionForKeypress(event) {
-    const func = this.customFunctionMap[event.which];
+    const func = this.customFunctionMap[event.key];
     if (func && !CustomVideo.isInputFocused()) return func.bind(this);
     return () => {}; // no-op
   }
