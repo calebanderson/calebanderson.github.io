@@ -1,9 +1,8 @@
 import CustomBadge from './custom_badge.js';
 import CustomVideoCallbacks from './custom_video_callbacks.js';
+import Constants from './constants.js';
 
 class BookmarkButton extends CustomBadge {
-  static displayPrefix = 'Go To';
-
   get videoUrl() { return this.getAttribute('videoUrl'); }
   set videoUrl(src) { this.setAttribute('videoUrl', src); }
 
@@ -13,7 +12,7 @@ class BookmarkButton extends CustomBadge {
   }
 
   attributeChangedCallback() {
-    this.textContent = `${BookmarkButton.displayPrefix} ${this.formatTime(this.value)}`;
+    this.textContent = `${Constants.bookmarkPrefix} ${this.formatTime(this.value)}`;
   }
 
   formatTime(time) {

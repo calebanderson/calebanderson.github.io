@@ -1,4 +1,5 @@
 import './remove_shim.js';
+import Constants from './constants.js';
 import CustomVideo from './custom_video.js';
 
 // Wanted to try out promises... obviously not the most useful implementation...
@@ -14,9 +15,8 @@ function repeatUntilPresent(func, delay) {
   return new Promise(checkForPresence);
 }
 
-Promise.all([
-  repeatUntilPresent(() => document.querySelector(CustomVideo.videoElementSelector), 250),
-  repeatUntilPresent(() => document.querySelector(CustomVideo.badgeContainerSelector), 250),
-]).then(([video]) => {
-  window.customVideo = new CustomVideo(video);
-});
+repeatUntilPresent(() => (
+  document.readyState !== 'loading' // Used for checking if DOMContentLoaded has already fired
+  && document.querySelector(Constants.badgeContainerSelector)
+  && document.querySelector(Constants.videoElementSelector)
+), 250).then((video) => { window.customVideo = new CustomVideo(video); });
