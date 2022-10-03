@@ -47,7 +47,7 @@ class CustomVideo {
   loopPoints = new Set();
 
   get customFunctionMap() {
-    const expandedMap = {};
+    const expandedMap = new Map();
     [
       [Constants.addBookmark, this.addBookmark],
       [Constants.seekForward, this.seekForward],
@@ -57,7 +57,7 @@ class CustomVideo {
       [Constants.addLoopPoint, this.addLoopPoint],
       [Constants.clearLoopPoints, this.clearLoopPoints],
     ].forEach(([keys, func]) => {
-      [...keys].forEach((key) => { expandedMap[key] = func; });
+      [...keys].forEach((key) => { expandedMap.set(key, func); });
     });
     return expandedMap;
   }
@@ -107,7 +107,7 @@ class CustomVideo {
   interceptKeypress(event) { this.functionForKeypress(event)(event); }
 
   functionForKeypress(event) {
-    const func = this.customFunctionMap[event.key];
+    const func = this.customFunctionMap.get(event.key);
     if (func && !CustomVideo.isInputFocused()) return func.bind(this);
     return () => {}; // no-op
   }
