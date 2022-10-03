@@ -17,14 +17,12 @@ function repeatUntilPresent(func, delay) {
 
 const scriptSelector = 'script[data-source="User JavaScript and CSS extension"]:not([src])';
 
-Promise.all([
-  repeatUntilPresent(() => {
-    console.log(`New: ${Constants.videoElementSelector}`);
-    return document.querySelector(Constants.videoElementSelector);
-  }, 250),
-  repeatUntilPresent(() => document.querySelector(scriptSelector), 250),
-  repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
-]).then(([video]) => {
+repeatUntilPresent(() => {
+  if (!document.querySelector(scriptSelector)) return null;
+  if (!document.querySelector(Constants.badgeContainerSelector)) return null;
+
+  return document.querySelector(Constants.videoElementSelector);
+}, 250).then((video) => {
   console.log('Promise loaded');
   window.customVideo = new CustomVideo(video);
 });
