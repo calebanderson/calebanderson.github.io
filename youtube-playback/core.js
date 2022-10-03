@@ -20,7 +20,7 @@ const scriptSelector = 'script[data-source="User JavaScript and CSS extension"]:
 Promise.all([
   repeatUntilPresent(() => {
     console.log(`New: ${Constants.videoElementSelector}`);
-    document.querySelector(Constants.videoElementSelector);
+    return document.querySelector(Constants.videoElementSelector);
   }, 250),
   repeatUntilPresent(() => document.querySelector(scriptSelector), 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
@@ -32,7 +32,7 @@ Promise.all([
 Promise.all([
   repeatUntilPresent(() => {
     console.log(`Old: ${Constants.videoElementSelector}`);
-    document.querySelector(Constants.videoElementSelector);
+    return document.querySelector(Constants.videoElementSelector);
   }, 250),
   repeatUntilPresent(() => document.querySelector(Constants.badgeContainerSelector), 250),
 ]).then(([video]) => {
