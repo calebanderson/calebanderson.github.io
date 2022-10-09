@@ -1,20 +1,21 @@
 const DefaultConstants = {
+  // Labels
   bookmarkPrefix: 'Go To',
   ratePrefix: 'Playback Rate:',
   endcardsHidden: 'Endcards Hidden',
   endcardsShown: 'Endcards Shown',
   autoPauseOn: 'Night Mode',
   autoPauseOff: 'Day Mode',
-
+  // Intervals/Scalars
   autoPauseInterval: 15,
   rateScalar: 1.2599,
   rateAdder: 0.00003,
   seekDuration: 5,
-
+  // Selectors
   inputSelector: 'yt-user-mention-autosuggest-input',
   badgeContainerSelector: '#above-the-fold, ytd-video-primary-info-renderer #container',
   videoElementSelector: 'video[src]',
-
+  // Key Bindings
   addBookmark: 'uU',
   increaseRate: ']}',
   decreaseRate: '[{',

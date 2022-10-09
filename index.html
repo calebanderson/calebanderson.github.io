@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>calebanderson.github.io</title>
+    <link href='/site.css' rel='stylesheet' />
+    <script type="application/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.config_option').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            const currentActive = document.querySelector('.config_option.active');
+            currentActive?.classList?.remove('active')
+            if(currentActive !== e.currentTarget) e.currentTarget.classList.add('active');
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="site_nav">
+      <svg version=1.1 viewBox="0 0 16 16">
+        <path class=logo />
+      </svg>
+    </div>
+    <div id="repo_nav">
+      <div id="breadcrumbs">
+        <svg version=1.1 viewBox="0 0 16 16">
+          <path class=file />
+        </svg>
+        <a href="https://github.com/calebanderson">calebanderson</a>
+        <span class='muted'>/</span>
+        <b class=light><a href="https://github.com/calebanderson/calebanderson.github.io">calebanderson.github.io</a></b>
+      </div>
+    </div>
+    <div id="container">
+      <div id='main'>
+        <div class="card">
+          <div class="header">Foo</div>
+          <div class="body">
+            <h1>calebanderson.github.io</h1>
+            <h4>Public distribution links for custom libraries and extensions:</h4>
+            <h3><a href='https://calebanderson.github.io/youtube-playback.js'>YouTube Controls Extension</a></h3>
+            <h4>Installation Instructions:</h4>
+            <ul>
+              <li>
+                Install the
+                <a href='https://chrome.google.com/webstore/detail/user-javascript-and-css/nbhcbdghjpllgmfilhnhkllmkecfmpld?hl=en'>
+                  User JavaScript and CSS
+                </a>
+                Chrome Extension
+              </li>
+
+              <li>
+                Add <code>https://calebanderson.github.io/youtube-playback.js</code> as a library source in the extension's Settings > Libraries area
+              </li>
+
+              <li>
+                Create a rule for youtube.com and include the created library using the Options dropdown
+                <ul>
+                  <li>The extension requires some_ content in either JS or CSS (comments do satisfy this requirement)</li>
+                  <li>The "Programmatic Injection" option for JavaScript should remain off</li>
+                </ul>
+              </li>
+
+              <li>
+                Some configuration is exposed (see https://calebanderson.github.io/youtube-playback/constants.js)
+                <ul>
+                  <li>To change any of these values, add overrides to an object at <code>window.YTPOptions</code></li>
+                </ul>
+              </li>
+            </ul>
+
+            <h4>Features:</h4>
+            <ul>
+              <li>Playback rate display</li>
+
+              <li>
+                Square brackets increase/decrease playback rate based on a multiplicative scalar
+                <ul>
+                  <li>Default setting is based on 3 steps changing the playback rate by a factor of 2</li>
+                </ul>
+              </li>
+
+              <li>
+                Add bookmarks for the current point in the video with 'U'
+                <ul>
+                  <li>Click to return to the indicated timestamp</li>
+                  <li>Click with the Command or Windows key to remove a bookmark</li>
+                </ul>
+              </li>
+
+              <li>Endcard visibility toggle</li>
+
+              <li>"Night Mode" auto-pause toggle (default pauses 15 minutes from last 'play' action)</li>
+
+              <li>Add A-B loop point with 'O', clear A-B loop points with 'P'
+                <ul>
+                  <li>A good way to remember: typing the word 'loop' will add 2 points then clear them</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class=card id=configuration>
+          <div class="table">
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class="folder" /></svg>
+                bookmarkPrefix
+              </div>
+              <div class=default>'Go To'</div>
+            </div>
+
+            <div class=accordion>
+              The text that goes in front of the timestamp for bookmarks.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class="folder" /></svg>
+                ratePrefix
+              </div>
+              <div class=default>'Playback Rate:'</div>
+            </div>
+
+            <div class=accordion>
+              The text that goes in front of the playback rate display.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class="folder" /></svg>
+                endcardsHidden
+              </div>
+              <div class=default>'Endcards Hidden'</div>
+            </div>
+
+            <div class=accordion>
+              The text shown when endcards are hidden. Some might prefer the clicking action (in this case "Show
+              Endcards") rather than displaying the current state.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                endcardsShown
+              </div>
+              <div class=default>'Endcards Shown'</div>
+            </div>
+
+            <div class=accordion>
+              The text shown when endcards are shown. Some might prefer the clicking action (in this case "Hide
+              Endcards") rather than displaying the current state.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                autoPauseOn
+              </div>
+              <div class=default>'Night Mode'</div>
+            </div>
+
+            <div class=accordion>
+              The text shown when auto-pausing is enabled. I called it "Night Mode" because it was created so I'd have
+              a better idea where I was in an audio book I listen to at night. Some might prefer the clicking action
+              (in this case "Disable Auto-Pause") rather than displaying the current state.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                autoPauseOff
+              </div>
+              <div class=default>'Day Mode'</div>
+            </div>
+
+            <div class=accordion>
+              The text shown when auto-pausing is disabled. I called it "Day Mode" because it was the opposite of
+              "Night Mode". Some might prefer the clicking action (in this case "Enable Auto-Pause") rather than
+              displaying the current state.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                autoPauseInterval
+              </div>
+              <div class=default>15</div>
+            </div>
+
+            <div class=accordion>
+              How long (in minutes) it takes for the auto-pause to trigger. Measured from the last "play" action.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                rateScalar
+              </div>
+              <div class=default>1.2599</div>
+            </div>
+
+            <div class=accordion>
+              The current playback rate gets multiplied or divided by this value when stepping up or down.
+              Specifically these values were chosen so it takes 3 steps to double the playback speed, and stepping up
+              and down results in the same values.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                rateAdder
+              </div>
+              <div class=default>0.00003</div>
+            </div>
+
+            <div class=accordion>
+              The current playback rate gets this value added to or subtracted from it when stepping up or down.
+              Specifically these values were chosen so it takes 3 steps to double the playback speed, and stepping up
+              and down results in the same values.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                seekDuration
+              </div>
+              <div class=default>5</div>
+            </div>
+
+            <div class=accordion>
+              How far forward or backward the video seeks when pressing the seek keys. This was added because the
+              built-in seek keys only work (may be different at this point) when the video had been interacted with.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                inputSelector
+              </div>
+              <div class=default>'yt-user-mention-autosuggest-input'</div>
+            </div>
+
+            <div class=accordion>
+              This JS selector is used to disable all the custom key bindings, so if you're trying to leave a comment
+              or search for a video you won't have any issues.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                badgeContainerSelector
+              </div>
+              <div class=default>'#above-the-fold, ytd-video-primary-info-renderer #container'</div>
+            </div>
+
+            <div class=accordion>
+              This is the JS selector for the element the badges will be put inside of.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                videoElementSelector
+              </div>
+              <div class=default>'video[src]'</div>
+            </div>
+
+            <div class=accordion>
+              This is the JS selector for the video element.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                addBookmark
+              </div>
+              <div class=default>'uU'</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for adding a bookmark. Key bindings are able to be an array of keys or string of
+              keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                increaseRate
+              </div>
+              <div class=default>']}'</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for increasing the playback rate. Key bindings are able to be an array of keys or
+              string of keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                decreaseRate
+              </div>
+              <div class=default>'[{'</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for decreasing the playback rate. Key bindings are able to be an array of keys or
+              string of keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                seekForward
+              </div>
+              <div class=default>['ArrowRight']</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for seeking forward. Key bindings are able to be an array of keys or string of
+              keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                seekBackward
+              </div>
+              <div class=default>['ArrowLeft']</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for seeking backward. Key bindings are able to be an array of keys or string of
+              keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                addLoopPoint
+              </div>
+              <div class=default>'oO'</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for adding a loop point. Key bindings are able to be an array of keys or string of
+              keys if they're all single characters.
+            </div>
+
+            <div class=config_option>
+              <div class=name>
+                <svg version="1.1" viewBox="0 0 16 16"><path class=file /></svg>
+                clearLoopPoints
+              </div>
+              <div class=default>'pP'</div>
+            </div>
+
+            <div class=accordion>
+              This is the keybinding for clearing all loop points. Key bindings are able to be an array of keys or
+              string of keys if they're all single characters.
+            </div>
+          </div>
+
+          <div class=header>
+            <span class=config_option>
+              <span class=name>Configuration options</span>
+              <span class=default>Default Value</span>
+              <span class=count></span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="sidebar">
+        <b class=block>About</b>
+        <span class=muted><i>
+          This page serves the Javascript extensions written for personal use. Since it's public, feel free to use the
+          extensions as well.
+        </i></span>
+        <hr>
+      </div>
+    </div>
+  </body>
+</html>
