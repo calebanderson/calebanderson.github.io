@@ -62,14 +62,11 @@ path.file {
 /*}*/
 path.folder {
   fill-rule: evenodd;
-  d: path("M 1.75 1 A 1.75 1.75 0 0 0 0 2.75 v 10.5 C 0 14.216 0.784 15 1.75 15 h 12.5 A 1.75 1.75 0 0 0 16 13.25 v -8.5 A 1.75 1.75 0 0 0 14.25 3 H 7.5 a 0.25 0.25 0 0 1 -0.2 -0.1 l -0.9 -1.2 C 6.07 1.26 5.55 1 5 1 H 1.75 Z");
+  d: var(--folder);
 }
 path.logo {
   fill-rule: evenodd;
-  /*d: path("M 0 8 a 8 8 0 0 0 16 0 a 8 8 0 0 0 -16 0 Z M 1 9 v -2 H 15 v 2 Z M 3 3 a 0.5 2 45 0 0 1 1 a 0.5 2 45 0 0 -1 -1 Z M 13 3 a 0.5 2 -45 0 0 -1 1 a 0.5 2 -45 0 0 1 -1 Z")*/
-  /*d: path("M 0 8 a 8 8 0 0 0 16 0 a 8 8 0 0 0 -16 0 Z M 15 8 a 20 20 0 0 0 -14 0 Z M 3 3 a 0.5 2 45 0 0 1 1 a 0.5 2 45 0 0 -1 -1 Z M 13 3 a 0.5 2 -45 0 0 -1 1 a 0.5 2 -45 0 0 1 -1 Z")*/
-  d: path("M 0 8 a 8 8 0 0 0 16 0 a 8 8 0 0 0 -16 0 Z M 15 8 a 15 15 0 0 0 -14 0 Z M 3 3 a 0.5 2 45 0 0 1 1 a 0.5 2 45 0 0 -1 -1 Z M 13 3 a 0.5 1 -45 0 0 -1 1 a 0.5 1 -45 0 0 1 -1 Z")
-  /*d: path("M 0 8 a 8 8 0 0 0 16 0 a 8 8 0 0 0 -16 0 Z M 15 8 a 15 15 0 0 0 -14 0 Z M 3 3 a 0.75 2 45 0 0 1 1 a 0.75 2 45 1 0 -1 -1 Z M 13 3 a 0.5 1 -45 0 0 -1 1 a 0.5 1 -45 0 0 1 -1 Z")*/
+  d: var(--logo-out);
 }
 
 
@@ -82,7 +79,8 @@ b.light { font-weight: 600; }
 /* Site Nav */
 #site_nav {
   display: block;
-  background-color: var(--accent-color);
+  background-color: var(--site-nav-bg);
+  color: var(--site-nav-text);
   position: sticky;
   top: 0;
   left: 0;
@@ -93,26 +91,30 @@ b.light { font-weight: 600; }
 #site_nav svg {
   height: 2rem;
   width: 2rem;
+  stroke: #000;
+  stroke-width: 0.2px;
   transition: transform 1s;
   transform: scale(1);
   fill: currentColor;
 }
 #site_nav svg path {
-  transition: transform 1s;
+  transition: transform 1s, d 1s;
   transform: rotate(0);
   transform-origin: 50% 50%;
 }
 #site_nav svg:hover {
   transition: transform 1s;
-  transform: scale(10);
+  transform: scale(9);
 }
 #site_nav svg:hover path {
-  transition: transform 1s 0.5s;
-  transform: rotate(135deg);
+  transition: transform 1s 0.5s, d 1s 1.5s;
+  transform: rotate(145deg);
+  d: var(--logo-left);
 }
 
 /* Repo Nav */
 #repo_nav {
+  background-color: var(--repo-nav-bg);
   padding: 1rem 2rem 4rem;
   border-bottom: 1px solid var(--border-muted);
 }
@@ -135,7 +137,7 @@ b.light { font-weight: 600; }
 
 /* Main Content Container */
 #main {
-  flex: 9 30rem;
+  flex: 7 32rem;
   margin-top: 3rem;
 }
 
@@ -254,11 +256,13 @@ b.light { font-weight: 600; }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #0D1117;
-    --header-color: #161B22;
-    --accent-color: #161B22;
-    --code-color: #6E768166;
     --text-color: #C9D1D9;
     --text-muted: #8B949E;
+    --site-nav-bg: #161B22;
+    --site-nav-text: #F0F6FC;
+    --repo-nav-bg: var(--bg-color);
+    --accent-color: #161B22;
+    --code-color: #6E768166;
     --link-color: #58A6FF;
     --border-base: 48, 54, 61;
   }
@@ -267,12 +271,40 @@ b.light { font-weight: 600; }
 @media (prefers-color-scheme: light) {
   :root {
     --bg-color: #FFFFFF;
-    --header-color: #24292F;
-    --accent-color: #F6F8FA;
-    --code-color: #AFB8C133;
     --text-color: #24292F;
     --text-muted: #50676A;
+    --site-nav-bg: var(--text-color);
+    --site-nav-text: var(--bg-color);
+    --repo-nav-bg: var(--accent-color);
+    --accent-color: #F6F8FA;
+    --code-color: #AFB8C133;
     --link-color: #0969DA;
     --border-base: 208, 215, 222;
   }
+}
+
+:root {
+  --logo-out: path("M 0,8 a 8,8 0 0 0 16,0 a 8,8 0 0 0 -16,0 Z\
+  M 1,9 a 13,25 30 0 1 14,0 a 18,25 40 0 0 -14,0 Z\
+  M 3,3 a 1,2 45 0 0 2,2 a 1,2 45 0 0 -2,-2 Z\
+  M 3,3 a 1,2 45 0 0 2,2 a 1,2 45 0 0 -2,-2 Z\
+  M 3.25,3.25 a .1,.2 45 0 0 .5,.5 a .1,.2 45 0 0 -.5,-.5 Z\
+  M 3.25,3.25 a .1,.2 45 0 0 .5,.5 a .1,.2 45 0 0 -.5,-.5 Z\
+  M 13,3 a .2,.15 45 0 0 -1.5,1.5 a .2,.15 45 1 0 1.5,-1.5Z\
+  M 13,3 a .2,.15 45 0 0 -1.5,1.5 a .2,.15 45 1 0 1.5,-1.5 Z\
+  M 12.75,3.35 a .2,.15 45 0 0 -.5,.5 a .2,.15 45 1 0 .5,-.5 Z\
+  M 12.75,3.35 a .2,.15 45 0 0 -.5,.5 a .2,.15 45 1 0 .5,-.5 Z");
+
+  --logo-left: path("M 0,8 a 8,8 0 0 0 16,0 a 8,8 0 0 0 -16,0 Z\
+  M 1,9 a 13,25 30 0 1 14,0 a 18,25 40 0 0 -14,0 Z\
+  M 3,3 a 1,2 45 0 0 2,2 a 1,2 45 0 0 -2,-2 Z\
+  M 3,3 a 1,2 45 0 0 2,2 a 1,2 45 0 0 -2,-2 Z\
+  M 3.25,3.25 a .1,.2 45 0 0 .5,.5 a .1,.2 45 0 0 -.5,-.5 Z\
+  M 3.25,3.25 a .1,.2 45 0 0 .5,.5 a .1,.2 45 0 0 -.5,-.5 Z\
+  M 13,3 a .2,.15 45 0 0 -1.5,1.5 a .2,.15 45 1 0 1.5,-1.5Z\
+  M 13,3 a .2,.15 45 0 0 -1.5,1.5 a .2,.15 45 1 0 1.5,-1.5 Z\
+  M 12,3.15 a .2,.15 45 0 0 -.5,.5 a .2,.15 45 1 0 .5,-.5 Z\
+  M 12,3.15 a .2,.15 45 0 0 -.5,.5 a .2,.15 45 1 0 .5,-.5 Z");
+
+  --folder: path("M 1.75 15 H 14.25 a 1.75 1.75 0 0 0 1.75 -1.75 l 0 -8.5 a 1.75 1.75 0 0 0 -1.75 -1.75 H 7.5 a 0.25 0.25 0 0 1 -0.2 -0.1 l -0.9 -1.2 A 1.75 1.75 0 0 0 5 1 H 1.75 a 1.75 1.75 0 0 0 -1.75 1.75 l 0 10.5 a 1.75 1.75 0 0 0 1.75 1.75 Z ");
 }
