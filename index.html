@@ -9,8 +9,8 @@
         document.querySelectorAll('.config_option').forEach((el) => {
           el.addEventListener('click', (e) => {
             const currentActive = document.querySelector('.config_option.active');
+            e.currentTarget.classList.add('active');
             currentActive?.classList?.remove('active')
-            if(currentActive !== e.currentTarget) e.currentTarget.classList.add('active');
           });
         });
       });
