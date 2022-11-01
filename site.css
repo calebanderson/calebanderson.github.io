@@ -161,6 +161,18 @@ b.light { font-weight: 600; }
   border-bottom: 1px solid var(--border-muted);
   padding: 1rem 2rem;
 }
+#configuration .accordion::after {
+  color: var(--text-muted);
+  font-size: 90%;
+  display: block;
+  margin-top: 0.25rem;
+}
+#configuration .accordion.key-binding::after {
+  content: "Key bindings are able to be an array of keys or string of keys if they're all single characters.";
+}
+#configuration .accordion.toggle-label::after {
+  content: 'Some might prefer the clicking action (in this case "' attr(alt) '") rather than displaying the current state.';
+}
 .card > .table {
   order: 1;
   counter-reset: options;
@@ -224,7 +236,7 @@ b.light { font-weight: 600; }
 
 /* Components */
 .accordion {
-  transition-property: line-height, padding-top, padding-bottom, opacity;
+  transition-property: line-height, padding-top, padding-bottom, opacity, border-top-width, border-bottom-width;
   transition-duration: .25s;
   overflow: hidden;
 }
@@ -233,8 +245,22 @@ b.light { font-weight: 600; }
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   opacity: 0 !important;
+  border-top-width: 0 !important;
+  border-bottom-width: 0 !important;
 }
 
+.accordion::before,
+.accordion::after,
+.accordion * {
+  transition-property: margin-top, margin-bottom;
+  transition-duration: .25s;
+}
+*:not(.active) + .accordion::before,
+*:not(.active) + .accordion::after,
+*:not(.active) + .accordion * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
 
 /* Variables */
 :root {
