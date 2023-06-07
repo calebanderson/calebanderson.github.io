@@ -10,11 +10,7 @@ window.customCookie = CustomCookie;
 class CustomVideo {
   static customElementContainerID = 'custom_element_container';
   static #domInit;
-
-  static isInputFocused() {
-    const inputs = document.querySelectorAll(this.inputSelector);
-    return [...inputs].includes(document.activeElement);
-  }
+  loopPoints = new Set();
 
   constructor(video) {
     if (!CustomVideo.#domInit) {
@@ -36,15 +32,20 @@ class CustomVideo {
       CustomVideo.#domInit = true;
     }
 
-    this.element = video;
+    this._element = video;
     this.playbackRate = CustomCookie.rate;
     CustomCookie.trimCookie();
 
     document.addEventListener('keydown', this.interceptKeypress.bind(this), true);
   }
 
-  element;
-  loopPoints = new Set();
+  _element;
+
+  get element() {
+    if (this._element.src) { return this._element; }
+    this._element = document.querySelector('video[src]');
+    return this._element;
+  }
 
   get customFunctionMap() {
     const expandedMap = new Map();
@@ -63,9 +64,11 @@ class CustomVideo {
   }
 
   get time() { return this.element.currentTime; }
+
   set time(val) { this.element.currentTime = val; }
 
   get playbackRate() { return this.element.playbackRate; }
+
   set playbackRate(val) {
     const rate = Math.round(parseFloat(val) * 100) / 100; // round to 2 decimal places
 
@@ -77,9 +80,15 @@ class CustomVideo {
   }
 
   get loopStart() { return [...this.loopPoints].sort()[0]; }
+
   get loopEnd() { return [...this.loopPoints].sort().reverse()[0]; }
 
   get scalar() { return Constants.rateScalar + Constants.rateAdder / this.playbackRate; }
+
+  static isInputFocused() {
+    const inputs = document.querySelectorAll(this.inputSelector);
+    return [...inputs].includes(document.activeElement);
+  }
 
   focusVideo() { this.element.focus(); }
 
