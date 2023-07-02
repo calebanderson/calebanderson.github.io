@@ -1,4 +1,4 @@
-class CustomHTMLElement extends HTMLElement {
+class CustomHTMLElement extends HTMLElement.prototype.constructor {
   static stylesheet = 'custom_styles.css';
 
   get styleTag() {
