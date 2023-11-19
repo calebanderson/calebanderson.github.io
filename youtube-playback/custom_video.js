@@ -42,8 +42,8 @@ class CustomVideo {
   _element;
 
   get element() {
-    if (this._element.src) { return this._element; }
-    this._element = document.querySelector('video[src]');
+    if (Constants.cacheVideo && this._element?.src) { return this._element; }
+    this._element = document.querySelector(Constants.videoElementSelector);
     return this._element;
   }
 

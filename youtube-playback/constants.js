@@ -14,7 +14,8 @@ const DefaultConstants = {
   // Selectors
   inputSelector: 'yt-user-mention-autosuggest-input',
   badgeContainerSelector: '#above-the-fold, ytd-video-primary-info-renderer #container',
-  videoElementSelector: 'video[src]',
+  videoElementSelector: '.html5-video-container video[src]',
+  cacheVideo: true, // not fully implemented
   // Key Bindings
   addBookmark: 'uU',
   increaseRate: ']}',
